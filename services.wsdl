@@ -1,0 +1,116 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.hostco.ru/portal/lpu/types" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="services" targetNamespace="http://www.hostco.ru/portal/lpu/types">
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.hostco.ru/portal/lpu/types" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+            <xsd:import namespace="http://www.hostco.ru/portal/lpu/types" schemaLocation="http://10.80.0.90/PortalServiceLpu/services/PortalServiceLpu?xsd=typesLpu.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="ChangeSlotStateResponse">
+        <wsdl:part element="tns:ChangeSlotStateResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="CheckPatientRequest">
+        <wsdl:part element="tns:CheckPatientRequest" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="CheckPatientResponse">
+        <wsdl:part element="tns:CheckPatientResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="ValidatePatientResponse">
+        <wsdl:part element="tns:ValidatePatientResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="putParametersRequest">
+        <wsdl:part element="tns:putParametersRequest" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetAttachedMORequest">
+        <wsdl:part element="tns:GetAttachedMORequest" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="GetAttachedMOResponse">
+        <wsdl:part element="tns:GetAttachedMOResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="ServicesEndPoint">
+        <wsdl:documentation>SOAP Server description file</wsdl:documentation>
+        <wsdl:operation name="ChangeSlotState">
+            <wsdl:documentation>
+                Изменение состояния слота
+            </wsdl:documentation>
+            <wsdl:output message="tns:ChangeSlotStateResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckPatient">
+            <wsdl:documentation>
+                Прикрепление пациента к ЛПУ
+            </wsdl:documentation>
+            <wsdl:input message="tns:CheckPatientRequest"></wsdl:input>
+            <wsdl:output message="tns:CheckPatientResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ValidatePatient">
+            <wsdl:documentation>
+                Прикрепление пациента к ЛПУ (упрощенная версия)
+            </wsdl:documentation>
+            <wsdl:output message="tns:ValidatePatientResponse"></wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="putParameters">
+            <wsdl:documentation>
+                Изменение параметров пациента
+            </wsdl:documentation>
+            <wsdl:input message="tns:putParametersRequest"></wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachedMO">
+            <wsdl:documentation>
+                Получение кода прикрепленного к пациенту ЛПУ по снилсу
+            </wsdl:documentation>
+            <wsdl:input message="tns:GetAttachedMORequest"></wsdl:input>
+            <wsdl:output message="tns:GetAttachedMOResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="SOAPServiceBinding" type="tns:ServicesEndPoint">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ChangeSlotState">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckPatient">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ValidatePatient">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="putParameters">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetAttachedMO">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Service">
+        <wsdl:port binding="tns:SOAPServiceBinding" name="Port">
+            <soap:address location="https://10.80.18.59/services"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
