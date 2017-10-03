@@ -1,12 +1,22 @@
 module.exports = () => {
     return {
-        Service: {
-            Port: {
-                changeSlotState: args => { },
-                checkPatient: args => { },
-                validatePatient: args => { },
-                putParameters: args => { },
-                getAttachedMO: args => { }
+        service: {
+            port: {
+                changeSlotState: args => {
+                    console.log('args > ', args);
+                },
+                checkPatient: args => {
+                    console.log('args > ', args);
+                },
+                validatePatient: args => {
+                    console.log('args > ', args);
+                },
+                putParameters: args => {
+                    console.log('args > ', args);
+                },
+                getAttachedMO: args => {
+                    console.log('args > ', args);
+                }
             }
         }
     };
