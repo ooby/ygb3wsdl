@@ -17,10 +17,14 @@
             <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="./types.xsd"/>
             <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="./typesLpu.xsd"/>
             <xsd:element name="ValidatePatientResponse" type="lpu:ValidatePatientResponse"/>
+            <xsd:element name="ValidatePatientRequest" type="lpu:ValidatePatientRequest"/>
         </xsd:schema>
     </wsdl:types>
     <wsdl:message name="ValidatePatientResponse">
         <wsdl:part element="ns:ValidatePatientResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="ValidatePatientRequest">
+        <wsdl:part element="ns:ValidatePatientRequest" name="parameters"></wsdl:part>
     </wsdl:message>
     <wsdl:portType name="servicePort">
         <wsdl:documentation>SOAP Server description file</wsdl:documentation>
@@ -28,6 +32,7 @@
             <wsdl:documentation>
                 Прикрепление пациента к ЛПУ (упрощенная версия)
             </wsdl:documentation>
+            <wsdl:input message="ns:ValidatePatientRequest"></wsdl:input>
             <wsdl:output message="ns:ValidatePatientResponse"></wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
