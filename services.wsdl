@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:er="http://www.hostco.ru/types"
-    xmlns:lpu="http://www.hostco.ru/portal/lpu/types"
-    xmlns:ns="http://ygb3.ru/services"
+<wsdl:definitions 
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:tns="http://www.hostco.ru/portal/lpu"
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-    targetNamespace="http://ygb3.ru/services">
+    name="service"
+    targetNamespace="http://www.hostco.ru/portal/lpu">
 
-    <wsdl:types>
-        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-            xmlns:er="http://www.hostco.ru/types"
-            xmlns:lpu="http://www.hostco.ru/portal/lpu/types"
-            xmlns:ns="http://ygb3.ru/services"
-            xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-            targetNamespace="http://ygb3.ru/services">
+    <wsdl:types 
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <xsd:schema
+            xmlns:lt="http://www.hostco.ru/portal/lpu/types"
+            xmlns:ct="http://www.hostco.ru/types"
+            targetNamespace="http://www.hostco.ru/portal/lpu">
 
             <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="http://10.80.0.90/PortalServiceLpu/services/PortalServiceLpu?xsd=types.xsd"/>
             <xsd:import namespace="http://www.hostco.ru/portal/lpu/types" schemaLocation="http://10.80.0.90/PortalServiceLpu/services/PortalServiceLpu?xsd=typesLpu.xsd"/>
@@ -24,12 +21,12 @@
                     <xsd:documentation>Запрос прикрепления пациента к ЛПУ</xsd:documentation>
                 </xsd:annotation>
                 <xsd:sequence>
-                    <xsd:element name="muCode" type="er:MuCodeType">
+                    <xsd:element name="muCode" type="ct:MuCodeType">
                         <xsd:annotation>
                             <xsd:documentation>Код ЛПУ</xsd:documentation>
                         </xsd:annotation>
                     </xsd:element>
-                    <xsd:element name="patientInfo" type="er:PatientInfoType">
+                    <xsd:element name="patientInfo" type="ct:PatientInfoType">
                         <xsd:annotation>
                             <xsd:documentation>Информация о пациенте</xsd:documentation>
                         </xsd:annotation>
@@ -37,16 +34,17 @@
                 </xsd:sequence>
             </xsd:complexType>
 
-            <xsd:element name="ValidatePatientResponse" type="lpu:ValidatePatientResponse"/>
-            <xsd:element name="ValidatePatientRequest" type="ns:ValidatePatientRequest"/>
+            <xsd:element name="ValidatePatientRequest" type="tns:ValidatePatientRequest"/>
+            <xsd:element name="ValidatePatientResponse" type="lt:ValidatePatientResponse"/>
         </xsd:schema>
     </wsdl:types>
 
-    <wsdl:message name="ValidatePatientResponse">
-        <wsdl:part element="ns:ValidatePatientResponse" name="parameters"></wsdl:part>
-    </wsdl:message>
     <wsdl:message name="ValidatePatientRequest">
-        <wsdl:part element="ns:ValidatePatientRequest" name="parameters"></wsdl:part>
+        <wsdl:part element="tns:ValidatePatientRequest" name="parameters"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="ValidatePatientResponse">
+        <wsdl:part element="tns:ValidatePatientResponse" name="parameters"></wsdl:part>
     </wsdl:message>
 
     <wsdl:portType name="servicePort">
@@ -55,15 +53,15 @@
             <wsdl:documentation>
                 Прикрепление пациента к ЛПУ (упрощенная версия)
             </wsdl:documentation>
-            <wsdl:input message="ns:ValidatePatientRequest"></wsdl:input>
-            <wsdl:output message="ns:ValidatePatientResponse"></wsdl:output>
+            <wsdl:input message="tns:ValidatePatientRequest"></wsdl:input>
+            <wsdl:output message="tns:ValidatePatientResponse"></wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
 
-    <wsdl:binding name="binding" type="ns:servicePort">
+    <wsdl:binding name="binding" type="tns:servicePort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="validatePatient">
-            <soap:operation soapAction="http://ygb3.ru/services/validatePatient"/>
+            <soap:operation soapAction="http://www.hostco.ru/portal/lpu/validatePatient"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>
@@ -74,8 +72,8 @@
     </wsdl:binding>
     
     <wsdl:service name="service">
-        <wsdl:port binding="ns:binding" name="port">
-            <soap:address location="https://10.80.18.59/services"/>
+        <wsdl:port binding="tns:binding" name="port">
+            <soap:address location="http://10.80.18.59/services"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

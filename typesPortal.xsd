@@ -1,0 +1,593 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- edited with XMLSpy v2011 rel. 2 (http://www.altova.com) by TeaM DJiNN (TeaM DJiNN) --><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.hostco.ru/types" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.hostco.ru/portal/types">
+    <xs:import namespace="http://www.hostco.ru/types" schemaLocation="http://10.80.0.90/PortalService/services/portal?xsd=types.xsd"/>
+    <xs:complexType name="UpdateScheduleRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на обновление расписания</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns2:ScheduleElementType">
+                <xs:sequence>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>список интервалов приема (слотов) данного
+                                специалиста по данной специальности в данный день в данном
+                                кабинете
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:element name="SlotElement" type="ns2:SlotListElement"/>
+                    </xs:sequence>
+                    <xs:element minOccurs="0" name="update" type="xs:boolean">
+                        <xs:annotation>
+                            <xs:documentation>Признак обновления существующего расписания
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="UpdateMuInfoRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на обновление информации об ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns2:WeekScheduleType">
+                <xs:sequence>
+                    <xs:element name="muCode" type="ns2:MuCodeType">
+                        <xs:annotation>
+                            <xs:documentation>Код ЛПУ</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="department" type="ns2:DepartmentType">
+                            <xs:annotation>
+                                <xs:documentation>Список отделений ЛПУ</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:element minOccurs="0" name="extended_info">
+                        <xs:annotation>
+                            <xs:documentation>Дополнительные сведения об ЛПУ для отображения на
+                                портале
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:maxLength value="1512"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="UpdateCabinetInfoRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на обновление информации о кабинетах</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="deptCode" type="ns2:DeptCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код отделения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Список кабинетов</xs:documentation>
+                </xs:annotation>
+                <xs:element name="roomInfo" type="ns2:RoomType">
+                    <xs:annotation>
+                        <xs:documentation>Информаия о кабинете</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="UpdateStaffInfoRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на обновление списка медицинских работников и их
+                специальностей
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns2:StaffInfoType">
+                <xs:sequence>
+                    <xs:element name="muCode" type="ns2:MuCodeType">
+                        <xs:annotation>
+                            <xs:documentation>Код ЛПУ</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="UpdateServicePricesRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на обновление справочника прейскуранта цен на услуги МО
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>код ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="serviceCode">
+                <xs:annotation>
+                    <xs:documentation>код вида услуг</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="20"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="paymentCode">
+                <xs:annotation>
+                    <xs:documentation>код вида оплат</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="2"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="price" type="xs:decimal">
+                <xs:annotation>
+                    <xs:documentation>сумма</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="UpdatePolicyInfoRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на обновление полиса пациента</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType"/>
+            <xs:element name="snils" type="ns2:SNILSType"/>
+            <xs:element name="policyNumber">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="16"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="putParametersRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на изменение параметров пациента</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode">
+                <xs:annotation>
+                    <xs:documentation>Код ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="patientInfo" type="ns2:PatientInfoType">
+                <xs:annotation>
+                    <xs:documentation>Информация о пациенте</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Набор параметров</xs:documentation>
+                </xs:annotation>
+                <xs:element name="parameters" type="ns2:ParamListElement"/>
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="getMuInfoRequest">
+        <xs:annotation>
+            <xs:documentation>Сервисный запрос на получение информации об ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="getMuInfoResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос на получение информации об ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="muInfo">
+                <xs:annotation>
+                    <xs:documentation>Информация об ЛПУ</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="ns2:MuInfoType">
+                            <xs:sequence>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="department" type="ns2:ExtendedDepartmentType">
+                                    <xs:annotation>
+                                        <xs:documentation>Список отделений</xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                                <xs:element maxOccurs="unbounded" minOccurs="0" name="staff">
+                                    <xs:annotation>
+                                        <xs:documentation>Список сотрудников</xs:documentation>
+                                    </xs:annotation>
+                                    <xs:complexType>
+                                        <xs:complexContent>
+                                            <xs:extension base="ns2:StaffInfoType"/>
+                                        </xs:complexContent>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element ref="ns2:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ScheduleInfoResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос на получение информации о расписании
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="scheduleInfo">
+                <xs:annotation>
+                    <xs:documentation>Информация о расписаниях</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Список расписаний</xs:documentation>
+                        </xs:annotation>
+                        <xs:element name="schedule">
+                            <xs:complexType>
+                                <xs:complexContent>
+                                    <xs:extension base="ns2:ScheduleElementType">
+                                        <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                                            <xs:annotation>
+                                                <xs:documentation>Список слотов расписания
+                                                </xs:documentation>
+                                            </xs:annotation>
+                                            <xs:element name="slot" type="ns2:SlotListElement"/>
+                                        </xs:sequence>
+                                    </xs:extension>
+                                </xs:complexContent>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element ref="ns2:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ChangeCabinetRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на смену кабинета врача</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns2:ScheduleElementType">
+                <xs:sequence>
+                    <xs:element name="newDeptCode" type="ns2:DeptCodeType">
+                        <xs:annotation>
+                            <xs:documentation>Код нового отделения</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="newRoomNumber">
+                        <xs:annotation>
+                            <xs:documentation>Номер нового кабинета</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:maxLength value="100"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="UpdateDistrictRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на обновление участка</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>код ЛПУ в системе ОФОМС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="districtType" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>Тип участка</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="districtNumber" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Номер участка</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="AddressList">
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="DistrictAddress" type="ns2:DistrictAddressType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element minOccurs="0" name="AddressExceptionsList">
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element minOccurs="0" name="DistrictAddressException" type="ns2:DistrictAddressType">
+                            <xs:annotation>
+                                <xs:documentation>Список исключений</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="StaffList">
+                <xs:annotation>
+                    <xs:documentation>Список врачей участка</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="Staff" type="ns2:StaffIdType"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="UpdateSickLeavesRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на обновление информации по больничным медперсонала
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:element name="sickLeave" type="ns2:SickLeaveElementType">
+                    <xs:annotation>
+                        <xs:documentation>Запись о больничном листе</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ActualSpecialistListRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос списка специалистов МО, где есть актуальные свободные талоны
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код МО</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ActualSpecialistListResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос списка специалистов МО, где есть актуальные свободные
+                талоны
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element ref="ns2:portalServiceResponse"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="specialist" type="ns2:SpecialistType">
+                <xs:annotation>
+                    <xs:documentation>Список специалистов МО</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="SlotListByPeriodRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос слотов по арачу за период</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код МО</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="depCode" type="ns2:DeptCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код отделения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="snils" type="ns2:SNILSType">
+                <xs:annotation>
+                    <xs:documentation>СНИЛС специалиста</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="profCode" type="ns2:ProfCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код специалиста</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="positionCode" type="ns2:PosCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код должности специалиста</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="period" type="ns2:PeriodType">
+                <xs:annotation>
+                    <xs:documentation>Период по дате</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SlotListByPeriodResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ списка слотов по врачу за период</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="VisitDateList" type="ns2:DateSlotList"/>
+            <xs:element ref="ns2:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="GetAppointmentsBySNILSResponseType">
+        <xs:annotation>
+            <xs:documentation>Ответное сообщение с информацией о приемах пациента</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="Appointment" type="ns2:AppointmentSlotElement"/>
+            </xs:sequence>
+            <xs:element ref="ns2:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="GetSickLeaveListResponseType">
+        <xs:annotation>
+            <xs:documentation>Ответное сообщение на запрос действующих больничных листов
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element ref="ns2:portalServiceResponse"/>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="sickLeave" type="ns2:SickLeaveElementType"/>
+            </xs:sequence>
+        </xs:choice>
+    </xs:complexType>
+    <!-- Поиск участка -->
+    <xs:complexType name="FindDistrictRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на поиск участка по адресу</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="kladrCode" type="ns2:KLADRCodeType"/>
+            <xs:element name="street" type="xs:string"/>
+            <xs:element name="houseNumer" type="ns2:RequestHouseNumber"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="FindDistrictResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос поиска участка по адресу</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="district">
+                <xs:annotation>
+                    <xs:documentation>Искомый участок</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="muCode" type="ns2:MuCodeType">
+                            <xs:annotation>
+                                <xs:documentation>Код ЛПУ</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="muTitle" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Название ЛПУ</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="districtNumber" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Номер участка</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="districtTypeId" type="xs:long">
+                            <xs:annotation>
+                                <xs:documentation>Ид типа участка</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element name="districtType" type="xs:string">
+                            <xs:annotation>
+                                <xs:documentation>Тип участка</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="doctor">
+                            <xs:annotation>
+                                <xs:documentation>Врач на участке</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="fio" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>ФИО врача</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element maxOccurs="1" minOccurs="0" name="position" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Должность врача</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element maxOccurs="1" minOccurs="0" name="snils" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>СНИЛС врача</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element maxOccurs="1" minOccurs="0" name="specCode" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>код специальности</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element maxOccurs="1" minOccurs="0" name="positionCode" type="xs:long">
+                                        <xs:annotation>
+                                            <xs:documentation>код должности</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element ref="ns2:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="CallDoctorPortalRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос в портальный сервис на вызов врача на дом</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns2:CallDoctorRequest">
+                <xs:sequence>
+                    <xs:element maxOccurs="1" minOccurs="1" name="CallNumber" nillable="false" type="ns2:GUIDType">
+                        <xs:annotation>
+                            <xs:documentation>Номер вызова (присваивается в ЛПУ)</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element maxOccurs="1" minOccurs="1" name="muCode" nillable="false" type="ns2:MuCodeType">
+                        <xs:annotation>
+                            <xs:documentation>Код ЛПУ, в которое поступил вызов</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CancelCallDoctorPortalRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос в портальный сервис на отмену вызова врача на дом</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns2:CancelCallDoctorRequest">
+                <xs:sequence>
+                    <xs:element maxOccurs="1" minOccurs="1" name="cancelCode" type="xs:int">
+                        <xs:annotation>
+                            <xs:documentation>Код отмены >0-отмена вызова, 0-востановление вызова из отмененного
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

@@ -5,10 +5,12 @@ const nconf = require('./config');
 const config = nconf.get('config');
 
 const wsdl = require('fs').readFileSync('services.wsdl', 'utf8');
-const services = require('./services');
+const services = require('./services')(config);
 
 const server = http.createServer();
-server.listen(config.port);
+server.listen(config.port, () => {
+    console.log('Listening port:', config.port);
+});
 
 let s = soap.listen(server, '/services', services, wsdl);
 s.log = (t, d) => {
