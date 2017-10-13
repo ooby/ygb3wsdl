@@ -1,0 +1,1488 @@
+<?xml version='1.0' encoding='UTF-8'?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.hostco.ru/types" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.hostco.ru/types">
+    <xs:simpleType name="GUIDType">
+        <xs:annotation>
+            <xs:documentation>GUID</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="64"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SNILSType">
+        <xs:annotation>
+            <xs:documentation>СНИЛС</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="11"/>
+            <xs:maxLength value="11"/>
+            <xs:pattern value="[0-9]{11}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="KLADRCodeStreetType">
+        <xs:annotation>
+            <xs:documentation>Код КЛАДР до улицы</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:length value="17"/>
+            <xs:pattern value="\d{17}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="KLADRCodeType">
+        <xs:annotation>
+            <xs:documentation>Код КЛАДР до улицы</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:length value="13"/>
+            <xs:pattern value="\d{13}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SlipNumberType">
+        <xs:annotation>
+            <xs:documentation>Номер талона</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="RequestHouseNumber">
+        <xs:annotation>
+            <xs:documentation>Номера домов для запроса поиска участков</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d+"/>
+            <xs:pattern value="\d+\p{L}"/>
+            <xs:pattern value="\d+\p{L}?/\d+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="HouseNumberRange">
+        <xs:annotation>
+            <xs:documentation>Диапазон номеров домов</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d+-\d+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="HouseNumber">
+        <xs:annotation>
+            <xs:documentation>Номера домов</xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="ns1:RequestHouseNumber ns1:HouseNumberRange"/>
+    </xs:simpleType>
+    <xs:simpleType name="RoomNumberType">
+        <xs:annotation>
+            <xs:documentation>Номер кабинета</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="100"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="MuCodeType">
+        <xs:annotation>
+            <xs:documentation>Код ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="12"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ProfCodeType">
+        <xs:annotation>
+            <xs:documentation>Внешний код проффесионала</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    <xs:simpleType name="PosCodeType">
+        <xs:annotation>
+            <xs:documentation>Код должности специалиста</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:long"/>
+    </xs:simpleType>
+    <xs:simpleType name="DeptCodeType">
+        <xs:annotation>
+            <xs:documentation>Код отделения</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="AppointmentSourceType">
+        <xs:annotation>
+            <xs:documentation>Источник записи
+                (1-ЛПУ,
+                2-Портал,
+                3-Терминал,
+                4-Мобильное приложение,
+                5-Федеральная регистратура,
+                6-Региональный ПГУ)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:int"/>
+    </xs:simpleType>
+    <xs:simpleType name="AppointmentStatusType">
+        <xs:annotation>
+            <xs:documentation>Статус записи на прием (0-Фиктивный (отсутствует запись на
+                приём),1-Активная, 2-Выполнена,
+                3-Отменена, 4-Не выполнена (пациент не явился), 5-Не выполнена (врач на больничном))
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:int">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+            <xs:enumeration value="3"/>
+            <xs:enumeration value="4"/>
+            <xs:enumeration value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="FilterOptionsType">
+        <xs:annotation>
+            <xs:documentation>Набор ключевых атрибутов одного элемента расписания, для фильтрации
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="scheduleDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>дата расписания</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="muCode" type="ns1:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>код ЛПУ в системе ОФОМС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="deptCode" type="ns1:DeptCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код отделения внутри ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="roomNumber" type="ns1:RoomNumberType">
+                <xs:annotation>
+                    <xs:documentation>номер кабинета</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:choice minOccurs="0">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="docCode" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>код медработника</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="specCode" type="xs:long">
+                        <xs:annotation>
+                            <xs:documentation>код одной из специальностей медработника
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="positionCode" type="xs:int">
+                        <xs:annotation>
+                            <xs:documentation>код одной из должностей медработника
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="scheduleInfo" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>Дополнительная информация</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="docFIO" type="xs:string"/>
+                    <xs:element minOccurs="0" name="docSNILS" type="ns1:SNILSType">
+                        <xs:annotation>
+                            <xs:documentation>СНИЛС врача</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+                <xs:element name="actionCode" type="xs:long">
+                    <xs:annotation>
+                        <xs:documentation>код медицинского действия</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:choice>
+            <xs:element minOccurs="0" name="needFIO" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ScheduleElementType">
+        <xs:annotation>
+            <xs:documentation>Набор ключевых атрибутов одного элемента расписания, для
+                создания/удаления расписания
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:restriction base="ns1:FilterOptionsType">
+                <xs:sequence>
+                    <xs:element name="scheduleDate" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation>дата расписания</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="muCode" type="ns1:MuCodeType">
+                        <xs:annotation>
+                            <xs:documentation>код ЛПУ в системе ОФОМС</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="deptCode" type="ns1:DeptCodeType">
+                        <xs:annotation>
+                            <xs:documentation>Код отделения внутри ЛПУ</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="roomNumber" type="ns1:RoomNumberType">
+                        <xs:annotation>
+                            <xs:documentation>номер кабинета</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:choice>
+                        <xs:sequence>
+                            <xs:element name="docCode" type="xs:string">
+                                <xs:annotation>
+                                    <xs:documentation>код медработника</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="specCode" type="xs:long">
+                                <xs:annotation>
+                                    <xs:documentation>код одной из специальностей медработника
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element name="positionCode" type="xs:int">
+                                <xs:annotation>
+                                    <xs:documentation>код одной из должностей медработника
+                                    </xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="scheduleInfo" type="xs:string">
+                                <xs:annotation>
+                                    <xs:documentation>Дополнительная информация</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="docFIO" type="xs:string">
+                                <xs:annotation>
+                                    <xs:documentation>ФИО врача</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                            <xs:element minOccurs="0" name="docSNILS" type="ns1:SNILSType">
+                                <xs:annotation>
+                                    <xs:documentation>СНИЛС врача</xs:documentation>
+                                </xs:annotation>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:element name="actionCode" type="xs:long">
+                            <xs:annotation>
+                                <xs:documentation>код медицинского действия</xs:documentation>
+                            </xs:annotation>
+                        </xs:element>
+                    </xs:choice>
+                </xs:sequence>
+            </xs:restriction>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="AppointmentType">
+        <xs:annotation>
+            <xs:documentation>Информация о записи на приём</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element minOccurs="0" name="slipNumber">
+                <xs:annotation>
+                    <xs:documentation>Номер талона</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="50"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="appointmentSource" type="ns1:AppointmentSourceType">
+                <xs:annotation>
+                    <xs:documentation>Источник записи
+                        1 ЛПУ
+                        2 Портал
+                        3 Терминал
+                        4 Мобильное приложение
+                        5 Федеральная регистратура
+                        6 Региональный ПГУ
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="appointmentStatus" type="ns1:AppointmentStatusType">
+                <xs:annotation>
+                    <xs:documentation>Статус записи на приём</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="patientFIO" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>ФИО записанного пациента</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PeriodType">
+        <xs:annotation>
+            <xs:documentation>Период по дате</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="beginDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Начальная дата</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="endDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Конечная дата</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="TimeIntervalType">
+        <xs:annotation>
+            <xs:documentation>Интервал времени</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="timeStart" type="xs:time">
+                <xs:annotation>
+                    <xs:documentation>Время начала</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="timeFinish" type="xs:time">
+                <xs:annotation>
+                    <xs:documentation>Время окончания</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DepartmentType">
+        <xs:annotation>
+            <xs:documentation>Информация об отделении ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="deptCode" type="ns1:DeptCodeType">
+                <xs:annotation>
+                    <xs:documentation>код отделения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="deptName">
+                <xs:annotation>
+                    <xs:documentation>название отделения</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="250"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="deptShortName">
+                <xs:annotation>
+                    <xs:documentation>сокращенное название отделения</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="deptType" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>код типа отделения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="deptAddress">
+                <xs:annotation>
+                    <xs:documentation>адрес отделения</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="200"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="deptPhone">
+                <xs:annotation>
+                    <xs:documentation>телефон отделения</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="50"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="deleted" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation>Признак удаления</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="positions" type="ns1:PositionDeptType">
+                <xs:annotation>
+                    <xs:documentation>Должности в отделении</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ExtendedDepartmentType">
+        <xs:annotation>
+            <xs:documentation>Информация об отделении с кабинетами и работниками</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns1:DepartmentType">
+                <xs:sequence>
+                    <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Список кабинетов</xs:documentation>
+                        </xs:annotation>
+                        <xs:element name="room" type="ns1:RoomType"/>
+                    </xs:sequence>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="RoomType">
+        <xs:annotation>
+            <xs:documentation>Информация о кабинете</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="roomNumber" type="ns1:RoomNumberType">
+                <xs:annotation>
+                    <xs:documentation>Номер кабинета</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="deleted" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation>Признак удаления</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PatientInfoType">
+        <xs:annotation>
+            <xs:documentation>Информация о пациенте (все возможные идентификаторы)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element minOccurs="0" name="Lastname">
+                <xs:annotation>
+                    <xs:documentation>Фамилия</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="Firstname">
+                <xs:annotation>
+                    <xs:documentation>Имя</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="Middlename">
+                <xs:annotation>
+                    <xs:documentation>Отчество</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="birthDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Дата рождения</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="policyNumber">
+                <xs:annotation>
+                    <xs:documentation>Полис ОМС</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="16"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="policyNumberDMS">
+                <xs:annotation>
+                    <xs:documentation>Полис ДМС</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="32"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="SNILS" type="ns1:SNILSType">
+                <xs:annotation>
+                    <xs:documentation>Номер СНИЛС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="passportSeries">
+                <xs:annotation>
+                    <xs:documentation>Серия паспорта</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="4"/>
+                        <xs:pattern value="\d{4}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="passportNumber">
+                <xs:annotation>
+                    <xs:documentation>Номер паспорта</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="6"/>
+                        <xs:pattern value="\d{6}"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="phone">
+                <xs:annotation>
+                    <xs:documentation>Телефон</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="32"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="email">
+                <xs:annotation>
+                    <xs:documentation>Электронная почта</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="64"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="StaffInfoType">
+        <xs:annotation>
+            <xs:documentation>Информация о работнике ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="docCode">
+                <xs:annotation>
+                    <xs:documentation>Код специалиста</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="50"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="snils">
+                <xs:annotation>
+                    <xs:documentation>СНИЛС</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:length value="11"/>
+                        <xs:pattern value="([0-9]{11})"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="firstName">
+                <xs:annotation>
+                    <xs:documentation>Имя</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="middleName">
+                <xs:annotation>
+                    <xs:documentation>Отчество</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="lastName">
+                <xs:annotation>
+                    <xs:documentation>Фамилия</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="specialist_info">
+                <xs:annotation>
+                    <xs:documentation>Дополнительные сведения о специалисте</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Список специальностей</xs:documentation>
+                </xs:annotation>
+                <xs:element name="specCode" type="xs:int">
+                    <xs:annotation>
+                        <xs:documentation>Код специальности</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Список должностей</xs:documentation>
+                </xs:annotation>
+                <xs:element name="positionCode" type="xs:int">
+                    <xs:annotation>
+                        <xs:documentation>Код должности</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="StaffIdType">
+        <xs:annotation>
+            <xs:documentation>Информация о работнике ЛПУ, позволяющая его идентифицировать
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="snils" type="ns1:SNILSType">
+                <xs:annotation>
+                    <xs:documentation>СНИЛС медработника</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="specCode" type="xs:long">
+                <xs:annotation>
+                    <xs:documentation>Код специальности медработника</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="positionCode" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>Код должности медработника</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="MuInfoType">
+        <xs:annotation>
+            <xs:documentation>Информация об ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns1:WeekScheduleType">
+                <xs:sequence>
+                    <xs:element name="muCode" type="ns1:MuCodeType">
+                        <xs:annotation>
+                            <xs:documentation>Код ЛПУ</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="muName">
+                        <xs:annotation>
+                            <xs:documentation>название ЛПУ</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                                <xs:maxLength value="255"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="muAddress">
+                        <xs:annotation>
+                            <xs:documentation>адрес ЛПУ</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                                <xs:maxLength value="150"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="muLocality">
+                        <xs:annotation>
+                            <xs:documentation>Населенный пункт, в котором находится ЛПУ
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                                <xs:maxLength value="50"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="muLocalityCode">
+                        <xs:annotation>
+                            <xs:documentation>Код КЛАДР населенного пункта ЛПУ</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:length value="13"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="muWsdlURL">
+                        <xs:annotation>
+                            <xs:documentation>Адрес веб-сервиса на стороне ЛПУ, предназначенного для
+                                синхронизации расписания и процесса записи на прием
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                                <xs:maxLength value="200"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="muLatitude" type="xs:decimal">
+                        <xs:annotation>
+                            <xs:documentation>Широта географического местоположения ЛПУ
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="muLongitude" type="xs:decimal">
+                        <xs:annotation>
+                            <xs:documentation>Долгота географического местоположения ЛПУ
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="extended_info" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>Дополнительные сведения об ЛПУ для отображенияна
+                                портале
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="phone" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>Телефон</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="WeekScheduleType">
+        <xs:annotation>
+            <xs:documentation>Расписание на неделю</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element minOccurs="0" name="workMonday" type="ns1:TimeIntervalType">
+                <xs:annotation>
+                    <xs:documentation>часы работы понедельник</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="workTuesday" type="ns1:TimeIntervalType">
+                <xs:annotation>
+                    <xs:documentation>часы работы вторник</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="workWednesday" type="ns1:TimeIntervalType">
+                <xs:annotation>
+                    <xs:documentation>часы работы среда</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="workThursday" type="ns1:TimeIntervalType">
+                <xs:annotation>
+                    <xs:documentation>часы работы четверг</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="workFriday" type="ns1:TimeIntervalType">
+                <xs:annotation>
+                    <xs:documentation>часы работы пятница</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="workSaturday" type="ns1:TimeIntervalType">
+                <xs:annotation>
+                    <xs:documentation>часы работы суббота</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="workSunday" type="ns1:TimeIntervalType">
+                <xs:annotation>
+                    <xs:documentation>часы работы воскресенье</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SlotInfo">
+        <xs:annotation>
+            <xs:documentation>Базовая информация о слоте</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="GUID" type="ns1:GUIDType">
+                <xs:annotation>
+                    <xs:documentation>GUID слота</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="SlotState" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>Код состояния слота</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="patientInfo" type="ns1:PatientInfoType">
+                <xs:annotation>
+                    <xs:documentation>Информация о пациенте</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SlotInfoGUID">
+        <xs:annotation>
+            <xs:documentation>GUID слота внутри комплексного типа</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="GUID" type="ns1:GUIDType">
+                <xs:annotation>
+                    <xs:documentation>GUID слота</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="needExtra" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation>Нужна дополнительная информация</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SlotInfoPatient">
+        <xs:annotation>
+            <xs:documentation>Cлот с пациентом</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:restriction base="ns1:SlotInfo">
+                <xs:sequence>
+                    <xs:element name="GUID" type="ns1:GUIDType">
+                        <xs:annotation>
+                            <xs:documentation>GUID слота</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SlotState" type="xs:int">
+                        <xs:annotation>
+                            <xs:documentation>Код состояния слота</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="patientInfo" type="ns1:PatientInfoType">
+                        <xs:annotation>
+                            <xs:documentation>Информация о пациенте</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:restriction>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SlotListElement">
+        <xs:annotation>
+            <xs:documentation>Элемент списка с информацие о слоте</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="timeInterval" type="ns1:TimeIntervalType">
+                <xs:annotation>
+                    <xs:documentation>Время приема</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="slotType" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>код типа слота (плановый, платный, и .т.п)
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="slotTypeName" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Наименование типа слота</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="slotInfo">
+                <xs:annotation>
+                    <xs:documentation>Общая информация о слоте</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:restriction base="ns1:SlotInfo">
+                            <xs:sequence>
+                                <xs:element name="GUID" type="ns1:GUIDType">
+                                    <xs:annotation>
+                                        <xs:documentation>GUID слота</xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                                <xs:element name="SlotState" type="xs:int">
+                                    <xs:annotation>
+                                        <xs:documentation>Код состояния слота</xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                                <xs:element maxOccurs="0" minOccurs="0" name="patientInfo" type="ns1:PatientInfoType">
+                                    <xs:annotation>
+                                        <xs:documentation>Информация о пациенте</xs:documentation>
+                                    </xs:annotation>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:restriction>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Список записей на приём на этот слот</xs:documentation>
+                </xs:annotation>
+                <xs:element name="appointment" type="ns1:AppointmentType"/>
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ParamListElement">
+        <xs:annotation>
+            <xs:documentation>Пара имя параметра-значение</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="name">
+                <xs:annotation>
+                    <xs:documentation>Наименование параметра</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="50"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element minOccurs="0" name="value">
+                <xs:annotation>
+                    <xs:documentation>Значение параметра</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="0"/>
+                        <xs:maxLength value="4000"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PortalServiceResponseType">
+        <xs:annotation>
+            <xs:documentation>Тип ответного сообщения с результатом вызова операции сервиса (и
+                возможным списком ошибок)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="ErrorCode" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>Код ошибки (0 - отсутствие ошибок)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="ErrorText" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Текст ошибки, не связанной с конкретной записью
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="ErrorList">
+                <xs:annotation>
+                    <xs:documentation>Список ошибок при приеме конкретных записей</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="RecordError">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element minOccurs="0" name="RecordCode" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Идентификатор записи. Зависит от
+                                                конкретного типа принимаемых данных
+                                            </xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                    <xs:element name="RecordErrorText" type="xs:string">
+                                        <xs:annotation>
+                                            <xs:documentation>Текст ошибки</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:element name="portalServiceResponse" type="ns1:PortalServiceResponseType">
+        <xs:annotation>
+            <xs:documentation>Ответное сообщение с результатом вызова операции сервиса
+            </xs:documentation>
+        </xs:annotation>
+    </xs:element>
+    <xs:complexType name="SlotListResponseType">
+        <xs:annotation>
+            <xs:documentation>Ответ на запросы, предполагающие возврат слота или списка слотов
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" name="slotInfo" type="ns1:SlotInfo"/>
+                <xs:element minOccurs="0" name="schedule" type="ns1:ScheduleElementType"/>
+                <xs:element minOccurs="0" name="slot" type="ns1:SlotListElement"/>
+            </xs:sequence>
+            <xs:element ref="ns1:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ChangeSlotStateType">
+        <xs:annotation>
+            <xs:documentation>Запрос на изменение состояния слота</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="slotInfo" type="ns1:SlotInfoPatient">
+                <xs:annotation>
+                    <xs:documentation>Информация о слоте</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="status" type="ns1:AppointmentStatusType">
+                <xs:annotation>
+                    <xs:documentation>Статус записи о приеме</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="slipNumber" type="ns1:SlipNumberType">
+                <xs:annotation>
+                    <xs:documentation>Номер талона</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="appointmentSource" type="ns1:AppointmentSourceType">
+                <xs:annotation>
+                    <xs:documentation>Источник записи</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="token" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ChangeSlotStateSlipType">
+        <xs:annotation>
+            <xs:documentation>Запрос на изменение состояния слота, с обязательным номером талона
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:restriction base="ns1:ChangeSlotStateType">
+                <xs:sequence>
+                    <xs:element name="slotInfo" type="ns1:SlotInfoPatient">
+                        <xs:annotation>
+                            <xs:documentation>Информация о слоте</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="status" type="ns1:AppointmentStatusType">
+                        <xs:annotation>
+                            <xs:documentation>Статус записи о приеме</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="slipNumber" type="ns1:SlipNumberType">
+                        <xs:annotation>
+                            <xs:documentation>Номер талона</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="appointmentSource" type="ns1:AppointmentSourceType">
+                        <xs:annotation>
+                            <xs:documentation>Источник записи</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="token" type="xs:string"/>
+                </xs:sequence>
+            </xs:restriction>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DistrictAddressType">
+        <xs:annotation>
+            <xs:documentation>Адрес участка</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Street" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Название улицы</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="House" type="ns1:HouseNumber">
+                <xs:annotation>
+                    <xs:documentation>Номера домов</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="even" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation>true - четные номера</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="kladrCode" type="ns1:KLADRCodeStreetType">
+                <xs:annotation>
+                    <xs:documentation>Код КЛАДР улицы</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AddressType">
+        <xs:annotation>
+            <xs:documentation>Адрес</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="City">
+                <xs:annotation>
+                    <xs:documentation>Название города</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="1" name="Street">
+                <xs:annotation>
+                    <xs:documentation>Название улицы</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="1" name="House">
+                <xs:annotation>
+                    <xs:documentation>Номер дома</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="Entrance" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>Номер подъезда</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="Floor" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>Номер этажа</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="Apartment" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>Номер квартиры</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="Intercom">
+                <xs:annotation>
+                    <xs:documentation>Номер домофона</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="Notes">
+                <xs:annotation>
+                    <xs:documentation>Комментарий</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SickLeaveElementType">
+        <xs:annotation>
+            <xs:documentation>Набор атрибутов для записи о больничном медработника
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="snils" type="ns1:SNILSType">
+                <xs:annotation>
+                    <xs:documentation>СНИЛС медработника</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="beginDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Дата выписки больничного листа</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="endDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Дата закрытия больничного листа</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="deleted" type="xs:boolean">
+                <xs:annotation>
+                    <xs:documentation>true - удаление существующей записи
+                        false - создание новой/редактирование существующей записи
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="SpecialistType">
+        <xs:annotation>
+            <xs:documentation>Специалист отделения ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns1:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код МО</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="profCode" type="ns1:ProfCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код доктора</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="snils" type="ns1:SNILSType">
+                <xs:annotation>
+                    <xs:documentation>СНИЛС специалиста</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="lastName" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Фамилия</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="firstName" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Имя</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="middleName" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Отчество</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="departments" type="ns1:DeptSpecialistType">
+                <xs:annotation>
+                    <xs:documentation>Отделения специалиста</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PositionType">
+        <xs:annotation>
+            <xs:documentation>Должность специалиста</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="code" type="xs:long">
+                <xs:annotation>
+                    <xs:documentation>Код должности</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="name" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Наименование должности</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="postExtendedInfo" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Дополнительная информация о должности</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="nearestDate" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="DeptSpecialistType">
+        <xs:annotation>
+            <xs:documentation>Отделение специалиста</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="department" type="ns1:DepartmentType"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PositionDeptType">
+        <xs:annotation>
+            <xs:documentation>Должности специалиста</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="position" type="ns1:PositionType">
+                <xs:annotation>
+                    <xs:documentation>Должность в отделении</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DateSlot">
+        <xs:annotation>
+            <xs:documentation>Слоты за определенную дату</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="ScheduleDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Дата приёма по расписанию</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element minOccurs="0" name="ScheduleInfo" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Общая информация по расписанию</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="SlotList" type="ns1:SlotListElements"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DateSlotList">
+        <xs:annotation>
+            <xs:documentation>Список дат слотов по врачу за период</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="VisitDate" type="ns1:DateSlot"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="SlotListElements">
+        <xs:annotation>
+            <xs:documentation>Слот за определенную дату</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="Slot" type="ns1:SlotListElement"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ExtendedSlotInfoGUID">
+        <xs:annotation>
+            <xs:documentation>GUID слота + код ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns1:SlotInfoGUID">
+                <xs:sequence>
+                    <xs:element name="muCode" type="ns1:MuCodeType"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="AppointmentSlotElement">
+        <xs:annotation>
+            <xs:documentation>Элемент списка с информацией о приеме с привязкой к слоту
+            </xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="ns1:SlotListElement">
+                <xs:sequence>
+                    <xs:element name="appointmentDate" type="xs:date">
+                        <xs:annotation>
+                            <xs:documentation>Дата приема</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="muName">
+                        <xs:annotation>
+                            <xs:documentation>Наименование отделения</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                                <xs:maxLength value="255"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element minOccurs="0" name="muAddress">
+                        <xs:annotation>
+                            <xs:documentation>Адрес отделения</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"/>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="docPosition">
+                        <xs:annotation>
+                            <xs:documentation>Должность врача</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string"/>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="docFIO" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>ФИО Врача</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CallDoctorRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на вызов врача на дом</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="CallDateTime" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Дата, на которую вызов</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="1" name="PatientInfo" type="ns1:PatientInfoType">
+                <xs:annotation>
+                    <xs:documentation>Информация о пациенте который делает вызов</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="0" name="OtherPatientInfo" type="ns1:PatientInfoType">
+                <xs:annotation>
+                    <xs:documentation>Информация о пациенте которому делаем вызов</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="1" name="Address" type="ns1:AddressType">
+                <xs:annotation>
+                    <xs:documentation>Информация о адресе</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element maxOccurs="1" minOccurs="1" name="Complaint">
+                <xs:annotation>
+                    <xs:documentation>Жалоба</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="100"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CallDoctorResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на вызов врача на дом
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="1" name="CallNumber" nillable="false" type="ns1:GUIDType"/>
+                <xs:element maxOccurs="1" minOccurs="0" name="IDMU" type="xs:string"/>
+            </xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="ns1:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="CancelCallDoctorRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на отмену вызова врача на дом
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="CallNumber" type="ns1:GUIDType"/>
+            <xs:element maxOccurs="1" minOccurs="0" name="muCode" type="ns1:MuCodeType"/>
+            <xs:element maxOccurs="1" minOccurs="0" name="cancelReason" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Причина отмены вызова</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CancelCallDoctorResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на отмену вызова врача на дом
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" ref="ns1:portalServiceResponse"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

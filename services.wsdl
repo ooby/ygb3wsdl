@@ -1,90 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-    xmlns:ns="http://ygb3.ru/services" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:er="http://www.hostco.ru/types"
+    xmlns:lpu="http://www.hostco.ru/portal/lpu/types"
+    xmlns:ns="http://ygb3.ru/services"
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
     targetNamespace="http://ygb3.ru/services">
     <wsdl:types>
-        <xsd:schema>
-            <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="http://10.80.0.90/PortalServiceLpu/services/PortalServiceLpu?xsd=types.xsd"/>
-        </xsd:schema>
-        <xsd:schema
-            xmlns:xs="http://www.w3.org/2001/XMLSchema"
-            elementFormDefault="qualified"
-            targetNamespace="https://ygb3.ru/types">
-            <xs:complexType name="ServiceRequestType">
-                <xs:annotation>
-                    <xs:documentation>
-                        Тип запроса
-                    </xs:documentation>
-                </xs:annotation>
-            </xs:complexType>
-            <xs:element name="serviceRequest" type="ServiceRequestType">
-                <xs:annotation>
-                    <xs:documentation>
-                        Запрос
-                    </xs:documentation>
-                </xs:annotation>
-            </xs:element>
-        </xsd:schema>
-        <xsd:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-            xmlns:ns2="http://www.hostco.ru/types"
-            xmlns:yns="https://ygb3.ru/types" 
-            attributeFormDefault="unqualified" 
-            elementFormDefault="qualified" 
-            targetNamespace="http://www.hostco.ru/portal/lpu/types">
-            <xs:complexType name="ValidatePatientRequest">
-                <xs:annotation>
-                    <xs:documentation>
-                        Ответ на запрос о прикреплении пациента к ЛПУ (упрощенная версия)
-                    </xs:documentation>
-                </xs:annotation>
-                <xs:choice>
-                    <xs:element name="muCode" type="ns2:MuCodeType">
-                        <xs:annotation>
-                            <xs:documentation>Код ЛПУ</xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                    <xs:element ref="yns:serviceRequest"/>
-                </xs:choice>
-            </xs:complexType>
-            <xs:complexType name="ValidatePatientResponse">
-                <xs:annotation>
-                    <xs:documentation>
-                        Ответ на запрос о прикреплении пациента к ЛПУ (упрощенная версия)
-                    </xs:documentation>
-                </xs:annotation>
-                <xs:choice>
-                    <xs:element name="muCode" type="ns2:MuCodeType">
-                        <xs:annotation>
-                            <xs:documentation>Код ЛПУ</xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                    <xs:element ref="ns2:portalServiceResponse"/>
-                </xs:choice>
-            </xs:complexType>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+            xmlns:er="http://www.hostco.ru/types"
+            xmlns:lpu="http://www.hostco.ru/portal/lpu/types"
+            xmlns:ns="http://ygb3.ru/services"
+            xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+            targetNamespace="http://ygb3.ru/services">
+            <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="./types.xsd"/>
+            <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="./typesLpu.xsd"/>
+            <xsd:element name="ValidatePatientResponse" type="lpu:ValidatePatientResponse"/>
         </xsd:schema>
     </wsdl:types>
-    <wsdl:message name="ValidatePatientRequest">
-        <wsdl:part element="ValidatePatientRequest" name="parameters"></wsdl:part>
-    </wsdl:message>
     <wsdl:message name="ValidatePatientResponse">
-        <wsdl:part element="ValidatePatientResponse" name="parameters"></wsdl:part>
+        <wsdl:part element="ns:ValidatePatientResponse" name="parameters"></wsdl:part>
     </wsdl:message>
     <wsdl:portType name="servicePort">
         <wsdl:documentation>SOAP Server description file</wsdl:documentation>
-        <wsdl:operation name="ValidatePatient">
+        <wsdl:operation name="validatePatient">
             <wsdl:documentation>
                 Прикрепление пациента к ЛПУ (упрощенная версия)
             </wsdl:documentation>
-            <wsdl:output message="ValidatePatientRequest"></wsdl:output>
-            <wsdl:output message="ValidatePatientResponse"></wsdl:output>
+            <wsdl:output message="ns:ValidatePatientResponse"></wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="binding" type="ns:servicePort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <wsdl:operation name="ValidatePatient">
-            <soap:operation soapAction=""/>
+        <wsdl:operation name="validatePatient">
+            <soap:operation soapAction="http://ygb3.ru/services/validatePatient"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>

@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8'?><xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.hostco.ru/types" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.hostco.ru/portal/lpu/types">
+    <xs:import namespace="http://www.hostco.ru/types" schemaLocation="http://10.80.0.90/PortalServiceLpu/services/PortalServiceLpu?xsd=types.xsd"/>
+    <xs:complexType name="ChangeSlotStateResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос об изменении состояния слота</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="slipNumber">
+                <xs:annotation>
+                    <xs:documentation>Номер талона</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                        <xs:maxLength value="50"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element ref="ns2:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="CheckPatientRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос прикрепления пациента к ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="patientInfo" type="ns2:PatientInfoType">
+                <xs:annotation>
+                    <xs:documentation>Информация о пациенте</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CheckPatientResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос прикрепления пациента к ЛПУ</xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:sequence>
+                <xs:element name="muCode" type="ns2:MuCodeType">
+                    <xs:annotation>
+                        <xs:documentation>Код ЛПУ</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" name="district" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Участок</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="docCode">
+                    <xs:annotation>
+                        <xs:documentation>Код врача</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:minLength value="1"/>
+                            <xs:maxLength value="50"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="roomNumber" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Кабинет</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:sequence minOccurs="0">
+                    <xs:element name="gynaecologistCode">
+                        <xs:annotation>
+                            <xs:documentation>Код гинеколога</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                                <xs:maxLength value="50"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="gynaecologistRoomNumber" type="xs:string">
+                        <xs:annotation>
+                            <xs:documentation>Номер кабинета гинеколога</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:sequence>
+            <xs:element ref="ns2:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="ValidatePatientResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос о прикреплении пациента к ЛПУ (упрощенная версия)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="ns2:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+    <xs:complexType name="putParametersRequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на изменение параметров пациента</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="muCode" type="ns2:MuCodeType">
+                <xs:annotation>
+                    <xs:documentation>Код ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="patientInfo" type="ns2:PatientInfoType">
+                <xs:annotation>
+                    <xs:documentation>Информация о пациенте</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:sequence maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Набор параметров</xs:documentation>
+                </xs:annotation>
+                <xs:element name="parameters" type="ns2:ParamListElement"/>
+            </xs:sequence>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GetAttachedMORequest">
+        <xs:annotation>
+            <xs:documentation>Запрос на получения кода прикрепленного к пациенту ЛПУ по снилсу
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="nPol" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Снилс</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GetAttachedMOResponse">
+        <xs:annotation>
+            <xs:documentation>Ответ на получения кода прикрепленного к пациенту ЛПУ по снилсу
+            </xs:documentation>
+        </xs:annotation>
+        <xs:choice>
+            <xs:element name="muCode" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Код ЛПУ</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element ref="ns2:portalServiceResponse"/>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>
