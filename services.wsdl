@@ -19,23 +19,23 @@
             <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="http://10.80.0.90/PortalServiceLpu/services/PortalServiceLpu?xsd=types.xsd"/>
             <xsd:import namespace="http://www.hostco.ru/portal/lpu/types" schemaLocation="http://10.80.0.90/PortalServiceLpu/services/PortalServiceLpu?xsd=typesLpu.xsd"/>
 
-            <xs:complexType name="ValidatePatientRequest">
-                <xs:annotation>
-                    <xs:documentation>Запрос прикрепления пациента к ЛПУ</xs:documentation>
-                </xs:annotation>
-                <xs:sequence>
-                    <xs:element name="muCode" type="er:MuCodeType">
-                        <xs:annotation>
-                            <xs:documentation>Код ЛПУ</xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                    <xs:element name="patientInfo" type="er:PatientInfoType">
-                        <xs:annotation>
-                            <xs:documentation>Информация о пациенте</xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
-                </xs:sequence>
-            </xs:complexType>
+            <xsd:complexType name="ValidatePatientRequest">
+                <xsd:annotation>
+                    <xsd:documentation>Запрос прикрепления пациента к ЛПУ</xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element name="muCode" type="er:MuCodeType">
+                        <xsd:annotation>
+                            <xsd:documentation>Код ЛПУ</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="patientInfo" type="er:PatientInfoType">
+                        <xsd:annotation>
+                            <xsd:documentation>Информация о пациенте</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
 
             <xsd:element name="ValidatePatientResponse" type="lpu:ValidatePatientResponse"/>
             <xsd:element name="ValidatePatientRequest" type="ns:ValidatePatientRequest"/>
