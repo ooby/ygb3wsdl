@@ -15,9 +15,9 @@
             xmlns:ns="http://ygb3.ru/services"
             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
             targetNamespace="http://ygb3.ru/services">
-            
-            <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="./types.xsd"/>
-            <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="./typesLpu.xsd"/>
+
+            <xsd:import namespace="http://www.hostco.ru/types" schemaLocation="http://10.80.0.90/PortalServiceLpu/services/PortalServiceLpu?xsd=types.xsd"/>
+            <xsd:import namespace="http://www.hostco.ru/portal/lpu/types" schemaLocation="http://10.80.0.90/PortalServiceLpu/services/PortalServiceLpu?xsd=typesLpu.xsd"/>
 
             <xs:complexType name="ValidatePatientRequest">
                 <xs:annotation>
