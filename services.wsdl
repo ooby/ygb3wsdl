@@ -34,17 +34,17 @@
                 </xsd:sequence>
             </xsd:complexType>
 
-            <xsd:element name="ValidatePatientRequest" type="tns:ValidatePatientRequest"/>
-            <xsd:element name="ValidatePatientResponse" type="lt:ValidatePatientResponse"/>
+            <xsd:element name="validatePatientRequest" type="tns:ValidatePatientRequest"/>
+            <xsd:element name="validatePatientResponse" ref="lt:ValidatePatientResponse"/>
         </xsd:schema>
     </wsdl:types>
 
-    <wsdl:message name="ValidatePatientRequest">
-        <wsdl:part element="tns:ValidatePatientRequest" name="parameters"></wsdl:part>
+    <wsdl:message name="validatePatientRequest">
+        <wsdl:part element="tns:validatePatientRequest" name="parameters"></wsdl:part>
     </wsdl:message>
 
-    <wsdl:message name="ValidatePatientResponse">
-        <wsdl:part element="tns:ValidatePatientResponse" name="parameters"></wsdl:part>
+    <wsdl:message name="validatePatientResponse">
+        <wsdl:part element="tns:validatePatientResponse" name="parameters"></wsdl:part>
     </wsdl:message>
 
     <wsdl:portType name="servicePort">
@@ -53,8 +53,8 @@
             <wsdl:documentation>
                 Прикрепление пациента к ЛПУ (упрощенная версия)
             </wsdl:documentation>
-            <wsdl:input message="tns:ValidatePatientRequest"></wsdl:input>
-            <wsdl:output message="tns:ValidatePatientResponse"></wsdl:output>
+            <wsdl:input message="tns:validatePatientRequest"></wsdl:input>
+            <wsdl:output message="tns:validatePatientResponse"></wsdl:output>
         </wsdl:operation>
     </wsdl:portType>
 

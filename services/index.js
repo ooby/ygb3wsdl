@@ -12,18 +12,23 @@ module.exports = c => {
                 checkPatient: args => {
                     console.log('args > ', args);
                 },
-                validatePatient: async args => {
-                    try {
-                        let data = {
-                            birthDate: birthFormat(args.patientInfo.birthDate),
-                            searchDocument: {
-                                docTypeId: 26,
-                                docNumber: args.patientInfo.policyNumber
-                            }
-                        };
-                        let r = await composer.validatePatient(data);
-                        return (r) ? { ErrorCode: 0 } : { ErrorCode: 1 };
-                    } catch (e) { return { ErrorCode: 1 }; }
+                validatePatient: (args, cb, headers, req) => {
+                    let data = {
+                        birthDate: birthFormat(args.patientInfo.birthDate),
+                        searchDocument: {
+                            docTypeId: 26,
+                            docNumber: args.patientInfo.policyNumber
+                        }
+                    };
+                    composer.validatePatient(data)
+                        .then(r => {
+                            console.log(r);
+                            cb({ 'ct:muCode': args.muCode, 'ct:portalServiceResponse': { 'ct:ErrorCode': 0 } });
+                        })
+                        .catch(e => {
+                            console.log(e);
+                            cb({ 'ct:muCode': args.muCode, 'ct:portalServiceResponse': { 'ct:ErrorCode': 1 } });
+                        });
                 },
                 putParameters: args => {
                     console.log('args > ', args);
