@@ -26,7 +26,7 @@
     "moment": "^2.19.1",
     "nconf": "^0.8.5",
     "refbooks": "^0.0.6",
-    "rmisjs": "^0.4.4",
+    "rmisjs": "^0.4.7",
     "soap": "^0.22.0"
   },
   "devDependencies": {
