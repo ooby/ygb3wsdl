@@ -22,12 +22,18 @@ module.exports = c => {
                     };
                     composer.validatePatient(data)
                         .then(r => {
-                            console.log(r);
-                            cb({ 'ct:muCode': args.muCode, 'ct:portalServiceResponse': { 'ct:ErrorCode': 0 } });
+                            if (r && r.response && r.response.statusCode === 500) {
+                                cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Нет прикрипления к учреждению' } });
+                            } else if (r && !r.response) {
+                                console.log(r);
+                                cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 0 } });
+                            } else {
+                                cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Не найден в базе учреждения' } });
+                            }
                         })
                         .catch(e => {
                             console.log(e);
-                            cb({ 'ct:muCode': args.muCode, 'ct:portalServiceResponse': { 'ct:ErrorCode': 1 } });
+                            cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка прикрипления к учреждению' } });
                         });
                 },
                 putParameters: args => {

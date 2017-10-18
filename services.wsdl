@@ -34,8 +34,23 @@
                 </xsd:sequence>
             </xsd:complexType>
 
+            <xsd:complexType name="ChangeSlotStateRequest">
+                <xsd:annotation>
+                    <xsd:documentation>Запрос об изменении состояния слота</xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element name="slotInfo" type="ct:SlotInfo">
+                        <xsd:annotation>
+                            <xsd:documentation>Базовая информация о слоте</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+
             <xsd:element name="validatePatientRequest" type="tns:ValidatePatientRequest"/>
             <xsd:element name="validatePatientResponse" ref="lt:ValidatePatientResponse"/>
+            <xsd:element name="changeSlotStateRequest" type="tns:ChangeSlotStateRequest"/>
+            <xsd:element name="changeSlotStateResponse" ref="lt:ChangeSlotStateResponse"/>
         </xsd:schema>
     </wsdl:types>
 
@@ -47,6 +62,14 @@
         <wsdl:part element="tns:validatePatientResponse" name="parameters"></wsdl:part>
     </wsdl:message>
 
+    <wsdl:message name="changeSlotStateRequest">
+        <wsdl:part element="tns:changeSlotStateRequest" name="parameters"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="changeSlotStateResponse">
+        <wsdl:part element="tns:changeSlotStateResponse" name="parameters"></wsdl:part>
+    </wsdl:message>
+
     <wsdl:portType name="servicePort">
         <wsdl:documentation>SOAP Server description file</wsdl:documentation>
         <wsdl:operation name="validatePatient">
@@ -56,12 +79,28 @@
             <wsdl:input message="tns:validatePatientRequest"></wsdl:input>
             <wsdl:output message="tns:validatePatientResponse"></wsdl:output>
         </wsdl:operation>
+        <wsdl:operation name="changeSlotState">
+            <wsdl:documentation>
+                Запрос об изменении состояния слота
+            </wsdl:documentation>
+            <wsdl:input message="tns:changeSlotStateRequest"></wsdl:input>
+            <wsdl:output message="tns:changeSlotStateResponse"></wsdl:output>
+        </wsdl:operation>
     </wsdl:portType>
 
     <wsdl:binding name="binding" type="tns:servicePort">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
         <wsdl:operation name="validatePatient">
             <soap:operation soapAction="http://www.hostco.ru/portal/lpu/validatePatient"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="changeSlotState">
+            <soap:operation soapAction="http://www.hostco.ru/portal/lpu/changeSlotState"/>
             <wsdl:input>
                 <soap:body use="literal"/>
             </wsdl:input>

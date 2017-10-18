@@ -4,6 +4,7 @@ node_modules
 config/config.json
 env1.xml
 env2.xml
+env3.xml
 debug.js
 debug.xml
 debug.json
