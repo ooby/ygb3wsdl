@@ -6,8 +6,27 @@ module.exports = c => {
     return {
         service: {
             port: {
-                changeSlotState: args => {
-                    console.log('args > ', args);
+                changeSlotState: (args, cb, headers, req) => {
+                    let data = {
+                        birthDate: birthFormat(args.patientInfo.birthDate),
+                        searchDocument: {
+                            docTypeId: 26,
+                            docNumber: args.patientInfo.policyNumber
+                        },
+                        GUID: args.GUID
+                    };
+                    composer.createVisit(data)
+                        .then(r => {
+                            if (r.length > 0) {
+                                cb({ 'lt:slipNumber': r });
+                            } else {
+                                cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка записи на прием' } });
+                            }
+                        })
+                        .catch(e => {
+                            console.log(e);
+                            cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка записи на прием' } });
+                        });
                 },
                 checkPatient: args => {
                     console.log('args > ', args);
