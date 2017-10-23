@@ -8,12 +8,12 @@ module.exports = c => {
             port: {
                 changeSlotState: (args, cb, headers, req) => {
                     let data = {
-                        birthDate: birthFormat(args.patientInfo.birthDate),
+                        birthDate: birthFormat(args.slotInfo.patientInfo.birthDate),
                         searchDocument: {
                             docTypeId: 26,
-                            docNumber: args.patientInfo.policyNumber
+                            docNumber: args.slotInfo.patientInfo.policyNumber
                         },
-                        GUID: args.GUID
+                        GUID: args.slotInfo.GUID
                     };
                     composer.createVisit(data)
                         .then(r => {
