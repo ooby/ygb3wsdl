@@ -15,18 +15,25 @@ module.exports = c => {
                         },
                         GUID: args.slotInfo.GUID
                     };
-                    composer.createVisit(data)
-                        .then(r => {
-                            if (r.length > 0) {
-                                cb({ 'lt:slipNumber': r });
-                            } else {
+                    if (args.status && parseInt(args.status) === 3) {
+                        // TODO: добавить обработку отмены записи
+                        cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 0 } });
+                    } else if (parseInt(args.status) !== 3) {
+                        composer.createVisit(data)
+                            .then(r => {
+                                if (r.length > 0) {
+                                    cb({ 'lt:slipNumber': r });
+                                } else {
+                                    cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка записи на прием' } });
+                                }
+                            })
+                            .catch(e => {
+                                console.log(e);
                                 cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка записи на прием' } });
-                            }
-                        })
-                        .catch(e => {
-                            console.log(e);
-                            cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка записи на прием' } });
-                        });
+                            });
+                    } else {
+                        cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка изменения состояния записи' } });
+                    }
                 },
                 checkPatient: args => {
                     console.log('args > ', args);
