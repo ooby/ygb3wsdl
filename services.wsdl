@@ -48,9 +48,9 @@
             </xsd:complexType>
 
             <xsd:element name="validatePatientRequest" type="tns:ValidatePatientRequest"/>
-            <xsd:element name="validatePatientResponse" ref="lt:ValidatePatientResponse"/>
+            <xsd:element name="validatePatientResponse" type="lt:ValidatePatientResponse"/>
             <xsd:element name="changeSlotStateRequest" type="tns:ChangeSlotStateRequest"/>
-            <xsd:element name="changeSlotStateResponse" ref="lt:ChangeSlotStateResponse"/>
+            <xsd:element name="changeSlotStateResponse" type="lt:ChangeSlotStateResponse"/>
         </xsd:schema>
     </wsdl:types>
 
