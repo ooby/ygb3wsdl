@@ -4,7 +4,7 @@
   "description": "YGB3 WSDL server",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js -i 1 --name ygb3wsdl",
+    "start": "pm2 start index.js -i 1 --name ygb3wsdl --log-date-format 'YYYY-MM-DD HH:mm:ss'",
     "test": "mocha ./test --timeout 30000"
   },
   "repository": {
