@@ -26,7 +26,7 @@ module.exports = c => {
                             })
                             .catch(e => {
                                 console.log(e);
-                                cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка отмены записи на прием' } });
+                                cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Попробуйте отменить запись позже' } });
                             });
                     } else if (parseInt(args.status) !== 3) {
                         composer.createVisit(data)
