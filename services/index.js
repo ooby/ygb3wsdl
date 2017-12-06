@@ -16,7 +16,7 @@ module.exports = c => {
                         GUID: args.slotInfo.GUID
                     };
                     if (args.status && parseInt(args.status) === 3) {
-                        composer.getVisit(data)
+                        composer.deleteVisit(data)
                             .then(r => {
                                 if (r.length > 0) {
                                     cb({ 'lt:slipNumber': r });
