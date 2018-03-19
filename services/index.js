@@ -59,7 +59,7 @@ module.exports = c => {
                     composer.validatePatient(data)
                         .then(r => {
                             if (r && r.response && r.response.statusCode === 500) {
-                                cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Нет прикрипления к учреждению' } });
+                                cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Нет прикрепления к учреждению' } });
                             } else if (r && !r.response) {
                                 console.log(r);
                                 cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 0 } });
@@ -69,7 +69,7 @@ module.exports = c => {
                         })
                         .catch(e => {
                             console.log(e);
-                            cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка прикрипления к учреждению' } });
+                            cb({ 'ct:portalServiceResponse': { 'ct:ErrorCode': 1, 'ct:ErrorText': 'Ошибка прикрепления к учреждению' } });
                         });
                 },
                 putParameters: args => {
