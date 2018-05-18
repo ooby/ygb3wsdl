@@ -1,6 +1,6 @@
 {
   "name": "ygb3wsdl",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "YGB3 WSDL server",
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,7 @@
     "moment": "^2.19.1",
     "nconf": "^0.8.5",
     "refbooks": "^0.0.6",
-    "rmisjs": "^0.5.4",
+    "rmisjs": "^0.5.5",
     "soap": "^0.22.0"
   },
   "devDependencies": {
