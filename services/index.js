@@ -1,9 +1,9 @@
 const moment = require('moment');
 const rmisjs = require('rmisjs');
 const birthFormat = t => moment(t).format('YYYY-MM-DD');
-module.exports = s => {
+module.exports = async s => {
     const { composer } = rmisjs(s);
-    let connection = composer.mongoConnect();
+    await composer.mongoConnect();
     return {
         service: {
             port: {
@@ -16,7 +16,6 @@ module.exports = s => {
                         },
                         GUID: args.slotInfo.GUID
                     };
-                    await connection;
                     if (args.status && parseInt(args.status) === 3) {
                         try {
                             let r = await composer.deleteVisit(data);
@@ -56,7 +55,6 @@ module.exports = s => {
                             docNumber: args.patientInfo.policyNumber
                         }
                     };
-                    await connection;
                     try {
                         let r = await composer.validatePatient(data);
                         if (r && r.response && r.response.statusCode === 500) {
