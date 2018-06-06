@@ -12,8 +12,8 @@ server.listen(config.port, () => {
     console.log('Listening port:', config.port);
 });
 
-services(config).then(() => {
-    let s = soap.listen(server, '/services', services, wsdl);
+services(config).then(service => {
+    let s = soap.listen(server, '/services', service, wsdl);
     s.log = (t, d) => {
         console.log(t, d);
     };
