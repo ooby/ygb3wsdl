@@ -16,3 +16,5 @@ let s = soap.listen(server, '/services', services, wsdl);
 s.log = (t, d) => {
     console.log(t, d);
 };
+
+if (config.timezone) process.env.TZ = config.timezone;
