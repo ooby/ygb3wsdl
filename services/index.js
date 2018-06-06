@@ -1,7 +1,7 @@
 const moment = require('moment');
 const rmisjs = require('rmisjs');
 const birthFormat = t => moment(t).format('YYYY-MM-DD');
-module.exports = c => {
+module.exports = s => {
     const { composer } = rmisjs(s);
     let connection = composer.mongoConnect();
     return {
