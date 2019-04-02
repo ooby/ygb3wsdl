@@ -1,3 +1,7 @@
+.git
+.eslintrc
+README.md
+.gitignore
 env1.xml
 env2.xml
 env3.xml
@@ -5,7 +9,6 @@ debug.js
 debug.xml
 debug.json
 /debug
-/config/config.json
 /magazine/*
 *.orig
 *~

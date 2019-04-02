@@ -1,8 +1,7 @@
 const http = require('http');
 const soap = require('soap');
 
-const nconf = require('./config');
-const config = nconf.get('config');
+const config = require('./config').get();
 
 const wsdl = require('fs').readFileSync('services.wsdl', 'utf8');
 const services = require('./services');
