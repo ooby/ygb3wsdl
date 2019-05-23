@@ -1,11 +1,7 @@
-FROM alpine:3.9
-ARG registry="https://registry.npmjs.org"
-RUN apk add --no-cache nodejs yarn
-ADD . /app
-WORKDIR /app
-RUN yarn install \
-        --prod \
-        --pure-lockfile \
-        --cache-folder /dev/shm/yarn_cache \
-        --registry $registry
-ENTRYPOINT yarn start
+FROM node:lts-alpine
+RUN mkdir -p /home/node/app && chown -R node:node /home/node/app
+WORKDIR /home/node/app
+COPY --chown=node:node . .
+USER node
+RUN yarn install --pure-lockfile --prod
+CMD yarn start
